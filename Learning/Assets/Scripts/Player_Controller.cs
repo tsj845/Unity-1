@@ -15,9 +15,14 @@ public class Player_Controller : MonoBehaviour
         Cursor.lockState = cursor_shown ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = cursor_shown;
     }
+    public void UpdateGlobalsCache (APP_Global global_vars) {
+        // APP_Global global_vars = GameObject.FindGameObjectWithTag("SCRIPTING_GLOBAL").GetComponent<APP_Global>();
+        gravity = global_vars.gravity;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        this.UpdateGlobalsCache(GameObject.FindGameObjectWithTag("SCRIPTING_GLOBAL").GetComponent<APP_Global>());
         this.ToggleCursor();
     }
     // Update is called once per frame
