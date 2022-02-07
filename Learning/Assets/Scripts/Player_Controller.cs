@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Player_Controller : MonoBehaviour
     public void UpdateGlobalsCache (APP_Global global_vars) {
         // APP_Global global_vars = GameObject.FindGameObjectWithTag("SCRIPTING_GLOBAL").GetComponent<APP_Global>();
         gravity = global_vars.gravity;
+        sensitivity = global_vars.mouse_sensitivity;
     }
     // Start is called before the first frame update
     void Start()
@@ -35,6 +37,9 @@ public class Player_Controller : MonoBehaviour
             Vector3 aligned_transform = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
             transform.Translate(strafe_amount, 0, 0);
             transform.position += (aligned_transform * aligned_amount);
+        }
+        if (Input.GetKeyDown(KeyCode.L)) {
+            Debug.Log(sensitivity);
         }
 
         if (Input.GetKey(KeyCode.Space) && onfloor) {

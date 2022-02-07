@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class APP_Global : MonoBehaviour
 {
     // global properties
+    private float mouse_sensitivity_base = 2.5f;
+    private float mouse_sensitivity_mult = 1f;
+    public float mouse_sensitivity {
+        get {return mouse_sensitivity_base * mouse_sensitivity_mult;}
+    }
     private float gravity_base = 0.02f;
     private float gravity_mult = 1f;
     public float gravity {
@@ -35,5 +39,10 @@ public class APP_Global : MonoBehaviour
         foreach (var item in GameObject.FindObjectsOfType<GameObject>()) {
             item.SendMessage("UpdateGlobalsCache", this);
         }
+    }
+    // menu input stuff
+    public void MenuMouseSensitivity (float value) {
+        mouse_sensitivity_mult = value;
+        this.UpdateGlobals();
     }
 }
