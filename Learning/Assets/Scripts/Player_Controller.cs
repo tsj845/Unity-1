@@ -1,10 +1,18 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 
 public class Player_Controller : MonoBehaviour
 {
+    // references
+    private APP_Global _global_vars;
+    private APP_Global global_vars {
+        get {return _global_vars;}
+        set {Debug.Log(value);_global_vars = value;}
+    }
+    // properties
     bool onfloor = true;
     public bool control_while_in_air = true;
+    bool menu_open = false;
     float velup = 0.0f;
     float gravity = 0.02f;
     float initvup = 0.3f;
@@ -13,23 +21,53 @@ public class Player_Controller : MonoBehaviour
     public float msense = 0.125f;
     void ToggleCursor () {
         cursor_shown = !cursor_shown;
+        this.SetCursor();
+    }
+    void SetCursor () {
         Cursor.lockState = cursor_shown ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = cursor_shown;
     }
-    public void UpdateGlobalsCache (APP_Global global_vars) {
+    public void UpdateGlobalsCache (APP_Global global_vars_v) {
         // APP_Global global_vars = GameObject.FindGameObjectWithTag("SCRIPTING_GLOBAL").GetComponent<APP_Global>();
-        gravity = global_vars.gravity;
-        sensitivity = global_vars.mouse_sensitivity;
+        gravity = global_vars_v.gravity;
+        sensitivity = global_vars_v.mouse_sensitivity;
+    }
+    void RegenerateRefs () {
+        global_vars = GameObject.FindGameObjectWithTag("SCRIPTING_GLOBAL").GetComponent<APP_Global>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        this.UpdateGlobalsCache(GameObject.FindGameObjectWithTag("SCRIPTING_GLOBAL").GetComponent<APP_Global>());
+        Debug.Log("start");
+        this.RegenerateRefs();
+        this.UpdateGlobalsCache(global_vars);
         this.ToggleCursor();
     }
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyUp(KeyCode.P)) {
+            menu_open = !menu_open;
+            cursor_shown = menu_open;
+            this.SetCursor();
+            // this.ToggleCursor();
+            if (menu_open) {
+                global_vars.OpenMenu();
+            } else {
+                global_vars.CloseMenu();
+                this.RegenerateRefs();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.L)) {
+            // Debug.Log(sensitivity);
+            Debug.Log(menu_open + " " + cursor_shown.ToString() + " " + Cursor.visible.ToString() + " " + Cursor.lockState.ToString());
+        }
+        if (Input.GetKeyUp(KeyCode.M)) {
+            this.ToggleCursor();
+        }
+        if (menu_open) {
+            return;
+        }
         // allows control of velocity to be disabled while in air
         if (control_while_in_air || onfloor) {
             float strafe_amount = Input.GetAxisRaw("Horizontal") * msense;
@@ -38,15 +76,9 @@ public class Player_Controller : MonoBehaviour
             transform.Translate(strafe_amount, 0, 0);
             transform.position += (aligned_transform * aligned_amount);
         }
-        if (Input.GetKeyDown(KeyCode.L)) {
-            Debug.Log(sensitivity);
-        }
 
         if (Input.GetKey(KeyCode.Space) && onfloor) {
             this.Jump();
-        }
-        if (Input.GetKeyUp(KeyCode.M)) {
-            this.ToggleCursor();
         }
         // only rotates camera when cursor is hidden
         if (!cursor_shown) {

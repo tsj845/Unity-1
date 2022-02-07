@@ -1,8 +1,16 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 
 public class APP_Global : MonoBehaviour
 {
+    // references
+    private Canvas controls_menu;
+    void Start () {
+        controls_menu = GameObject.FindObjectOfType<Canvas>();
+    }
+    // this config
+    private bool flush_enabled = true; /* controls if globals can be updated, used to disable updating when high frequency might
+                                         be occuring such as in a menu */
     // global properties
     private float mouse_sensitivity_base = 2.5f;
     private float mouse_sensitivity_mult = 1f;
@@ -36,13 +44,25 @@ public class APP_Global : MonoBehaviour
     }
     // update globals
     void UpdateGlobals () {
+        if (!flush_enabled) {
+            return;
+        }
         foreach (var item in GameObject.FindObjectsOfType<GameObject>()) {
-            item.SendMessage("UpdateGlobalsCache", this);
+            item.SendMessage("UpdateGlobalsCache", this, SendMessageOptions.DontRequireReceiver);
         }
     }
     // menu input stuff
     public void MenuMouseSensitivity (float value) {
         mouse_sensitivity_mult = value;
+    }
+    // menu controlling stuff
+    public void OpenMenu () {
+        flush_enabled = false;
+        controls_menu.gameObject.SetActive(true);
+    }
+    public void CloseMenu () {
+        controls_menu.gameObject.SetActive(false);
+        flush_enabled = true;
         this.UpdateGlobals();
     }
 }

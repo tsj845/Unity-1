@@ -38,7 +38,6 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\APP_Global.cs" />
      <Compile Include="Assets\Scripts\Circle_Mover.cs" />
-     <Compile Include="Assets\Scripts\MSenseSlider.cs" />
      <Compile Include="Assets\Scripts\Player_Controller.cs" />
      <Compile Include="Assets\Scripts\Script_1.cs" />
      <Compile Include="Assets\Scripts\trigger_script.cs" />
