@@ -41,7 +41,7 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.P)) {
+        if (Input.GetKeyUp(KeyCode.Tab)) {
             menu_open = !menu_open;
             cursor_shown = menu_open;
             this.SetCursor();
