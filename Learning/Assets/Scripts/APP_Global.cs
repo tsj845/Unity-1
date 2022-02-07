@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
-// using UnityEngine.UI;
 
 public class APP_Global : MonoBehaviour
 {
     // references
-    private Canvas controls_menu;
+    private GameObject controls_menu;
     void Start () {
-        controls_menu = GameObject.FindObjectOfType<Canvas>();
+        CanvasGroup[] menus = GameObject.FindObjectOfType<Canvas>().GetComponentsInChildren<CanvasGroup>();
+        foreach (var group in menus) {
+            if (group.gameObject.name == "Controls Menu") {
+                controls_menu = group.gameObject;
+            }
+        }
     }
     // this config
     private bool flush_enabled = true; /* controls if globals can be updated, used to disable updating when high frequency might

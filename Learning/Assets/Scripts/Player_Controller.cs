@@ -4,11 +4,7 @@
 public class Player_Controller : MonoBehaviour
 {
     // references
-    private APP_Global _global_vars;
-    private APP_Global global_vars {
-        get {return _global_vars;}
-        set {Debug.Log(value);_global_vars = value;}
-    }
+    private APP_Global global_vars;
     // properties
     bool onfloor = true;
     public bool control_while_in_air = true;
@@ -38,7 +34,6 @@ public class Player_Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("start");
         this.RegenerateRefs();
         this.UpdateGlobalsCache(global_vars);
         this.ToggleCursor();
@@ -60,7 +55,7 @@ public class Player_Controller : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.L)) {
             // Debug.Log(sensitivity);
-            Debug.Log(menu_open + " " + cursor_shown.ToString() + " " + Cursor.visible.ToString() + " " + Cursor.lockState.ToString());
+            // Debug.Log(menu_open + " " + cursor_shown.ToString() + " " + Cursor.visible.ToString() + " " + Cursor.lockState.ToString());
         }
         if (Input.GetKeyUp(KeyCode.M)) {
             this.ToggleCursor();
