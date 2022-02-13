@@ -17,6 +17,6 @@ public class trigger_script : MonoBehaviour
         transform.position = origin;
     }
     private void OnTriggerEnter (Collider other) {
-        Debug.Log("collision");
+        GameObject.FindGameObjectWithTag("SCRIPTING_GLOBAL").GetComponent<APP_Global>().Collision();
     }
 }

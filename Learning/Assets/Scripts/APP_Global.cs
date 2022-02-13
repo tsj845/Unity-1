@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class APP_Global : MonoBehaviour
 {
@@ -8,8 +9,17 @@ public class APP_Global : MonoBehaviour
     private GameObject controls_menu;
     private GameObject options_menu;
     private GameObject main_menu;
+    private GameObject collision_text;
     void Start () {
-        CanvasGroup[] menus = GameObject.FindObjectOfType<Canvas>().GetComponentsInChildren<CanvasGroup>();
+        Canvas canvas = GameObject.FindObjectOfType<Canvas>();
+        Text[] collision_texts = canvas.GetComponentsInChildren<Text>();
+        foreach (var text in collision_texts) {
+            if (text.gameObject.name == "Collision Text") {
+                collision_text = text.gameObject;
+                break;
+            }
+        }
+        CanvasGroup[] menus = canvas.GetComponentsInChildren<CanvasGroup>();
         foreach (var group in menus) {
             if (group.gameObject.name == "Controls Menu") {
                 controls_menu = group.gameObject;
@@ -117,6 +127,10 @@ public class APP_Global : MonoBehaviour
             this.SubMenuEntry(0);
             return true;
         }
+    }
+    public void Collision () {
+        collision_text.GetComponent<collision_text_fade>().fade_val = 1f;
+        // GameObject text = Resources.Load<GameObject>("CollisionTextPrefab.prefab");
     }
     // menu controlling stuff
     public void OpenMenu () {

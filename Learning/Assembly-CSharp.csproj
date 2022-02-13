@@ -40,6 +40,7 @@
      <Compile Include="Assets\Scripts\Circle_Mover.cs" />
      <Compile Include="Assets\Scripts\Player_Controller.cs" />
      <Compile Include="Assets\Scripts\Script_1.cs" />
+     <Compile Include="Assets\Scripts\collision_text_fade.cs" />
      <Compile Include="Assets\Scripts\trigger_script.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/Unity/Hub/Editor/2019.4.21f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
