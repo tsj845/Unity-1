@@ -42,15 +42,18 @@ public class Player_Controller : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Tab)) {
-            menu_open = !menu_open;
-            cursor_shown = menu_open;
-            this.SetCursor();
-            // this.ToggleCursor();
             if (menu_open) {
-                global_vars.OpenMenu();
+                menu_open = global_vars.BackMenu();
+                cursor_shown = menu_open;
+                this.SetCursor();
+                if (!menu_open) {
+                    this.RegenerateRefs();
+                }
             } else {
-                global_vars.CloseMenu();
-                this.RegenerateRefs();
+                menu_open = true;
+                cursor_shown = true;
+                this.SetCursor();
+                global_vars.OpenMenu();
             }
         }
         if (Input.GetKeyDown(KeyCode.L)) {

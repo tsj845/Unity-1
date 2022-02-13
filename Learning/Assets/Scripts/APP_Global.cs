@@ -2,14 +2,23 @@
 
 public class APP_Global : MonoBehaviour
 {
+    // optimization properties
+    private int cmid = -1;
     // references
     private GameObject controls_menu;
+    private GameObject options_menu;
+    private GameObject main_menu;
     void Start () {
         CanvasGroup[] menus = GameObject.FindObjectOfType<Canvas>().GetComponentsInChildren<CanvasGroup>();
         foreach (var group in menus) {
             if (group.gameObject.name == "Controls Menu") {
                 controls_menu = group.gameObject;
+            } else if (group.gameObject.name == "Options Menu") {
+                options_menu = group.gameObject;
+            } else if (group.gameObject.name == "Main Menu") {
+                main_menu = group.gameObject;
             }
+            group.gameObject.SetActive(false);
         }
     }
     // this config
@@ -59,13 +68,64 @@ public class APP_Global : MonoBehaviour
     public void MenuMouseSensitivity (float value) {
         mouse_sensitivity_mult = value;
     }
+    // helper function
+    private void CloseActiveMenu () {
+        switch (cmid) {
+            case 0:
+                main_menu.gameObject.SetActive(false);
+                break;
+            case 1:
+                controls_menu.gameObject.SetActive(false);
+                break;
+            case 2:
+                options_menu.gameObject.SetActive(false);
+                break;
+            default:
+                break;
+        }
+    }
+    // sub menu stuff
+    public void SubMenuEntry (int mid) {
+        if (mid > 2 || mid == cmid) {
+            return;
+        }
+        this.CloseActiveMenu();
+        switch (mid) {
+            case -1:
+                main_menu.gameObject.SetActive(true);
+                this.CloseMenu();
+                break;
+            case 0:
+                main_menu.SetActive(true);
+                break;
+            case 1:
+                controls_menu.SetActive(true);
+                break;
+            case 2:
+                options_menu.SetActive(true);
+                break;
+            default:
+                break;
+        }
+        cmid = mid;
+    }
+    public bool BackMenu () {
+        if (main_menu.gameObject.activeSelf) {
+            this.SubMenuEntry(-1);
+            return false;
+        } else {
+            this.SubMenuEntry(0);
+            return true;
+        }
+    }
     // menu controlling stuff
     public void OpenMenu () {
+        cmid = 0;
         flush_enabled = false;
-        controls_menu.gameObject.SetActive(true);
+        main_menu.gameObject.SetActive(true);
     }
     public void CloseMenu () {
-        controls_menu.gameObject.SetActive(false);
+        main_menu.gameObject.SetActive(false);
         flush_enabled = true;
         this.UpdateGlobals();
     }
